@@ -1,16 +1,31 @@
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
+import { Title } from './Title/Title';
+import { fetchContacts } from 'redux/operation';
+import { selectContacts } from 'redux/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
 export const App = () => {
+  const dispatch = useDispatch();
+  const { isLoading, error } = useSelector(selectContacts);
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
   return (
     <div
       style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
+        textAlign: 'center',
+        margin: '50px 0 0 0',
       }}
     >
-      React homework template
+      <Title />
+      <ContactForm />
+      <Filter />
+      <ContactList />
+      {isLoading && !error && <b>Request in progress...</b>}
     </div>
   );
 };
