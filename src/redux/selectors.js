@@ -14,7 +14,7 @@ export const selectVisibleContacts = createSelector(
         filter &&
         !contact.name.toLowerCase().includes(filter.toLowerCase())
       ) {
-        // return null;
+        return null;
       } else visibleContacts.push(contact);
     });
     return visibleContacts.reverse();
