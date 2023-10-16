@@ -9,8 +9,9 @@ import {
   StyledButton,
   StyledForm,
 } from './ContactForm.styled';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/operation';
+import { selectContacts } from 'redux/selectors';
 
 const inputTemplate = Yup.object().shape({
   name: Yup.string()
@@ -31,8 +32,18 @@ const inputTemplate = Yup.object().shape({
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const onSubmit = ({ name, number }) => {
+  const contacts = useSelector(selectContacts);
+  const onSubmit = ({ name, number }, actions) => {
+    const isDuplicate = contacts.some(items => {
+      return items.name.toLowerCase() === name.toLowerCase();
+    });
+
+    console.log(isDuplicate);
+
+    if (isDuplicate) return window.alert(`${name} is already in contacts.`);
+
     dispatch(addContact({ name, number }));
+    actions.resetForm();
   };
 
   return (
