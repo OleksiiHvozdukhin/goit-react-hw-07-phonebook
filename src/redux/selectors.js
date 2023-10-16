@@ -8,14 +8,14 @@ export const selectFilter = state => state.filter;
 export const selectVisibleContacts = createSelector(
   [selectContacts, selectFilter],
   (contacts, filter) => {
-    const visibleContacts = [];
-    contacts.map(contact => {
+    const visibleContacts = contacts.filter(contact => {
       if (
         filter &&
         !contact.name.toLowerCase().includes(filter.toLowerCase())
       ) {
-        return null;
-      } else visibleContacts.push(contact);
+        return false;
+      }
+      return true;
     });
     return visibleContacts.reverse();
   }
